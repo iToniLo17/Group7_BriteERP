@@ -2,15 +2,11 @@ package com.cybertek.BriteERP.pages;
 
 import com.cybertek.BriteERP.utilities.ConfigurationReader;
 import com.cybertek.BriteERP.utilities.Driver;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.time.LocalDate;
-import java.util.*;
-
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage implements ResetPassword {
 
 
 
@@ -19,13 +15,10 @@ public class LoginPage extends BasePage{
 
     @FindBy(xpath = "//input[@id='password']")
     private WebElement passwordInput;
-
-
     /* Pass in the parameter which user you want to login as
      * There are 4 different logins
      * ( pos manager, events manager, inventory manager, expenses manager )
      */
-
     public void login(String enterUser){
 
 
@@ -67,8 +60,23 @@ public class LoginPage extends BasePage{
     }
 
 
+    @FindBy(xpath = "//div//p[@class='alert alert-danger']")
+    private WebElement errorMessage;
+    public String getErrorMessage(){
+       return errorMessage.getText();
+    }
+
+    @FindBy(xpath = "//a[.='Reset Password']")
+    private WebElement resetPasswordLink;
 
 
+    public void clickOnResetPassword(){resetPasswordLink.click();}
+    public void resetPassword(String resetThisEmailAddress){
+        emailInput.clear();
+        emailInput.sendKeys(resetThisEmailAddress);
+        confirmButton.click();
+    }
+    public void backToLoginPage(){backToLoginPageLink.click(); }
 
 
 
